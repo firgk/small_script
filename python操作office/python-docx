@@ -1,0 +1,85 @@
+
+
+
+
+# import docx
+
+# # 创建一个空的Word文档
+# doc = docx.Document()
+# doc.save("empty.docx")
+
+
+
+
+
+
+# 去掉文档中的
+
+
+# import docx
+
+# # 打开一个已存在的Word文档
+# doc = docx.Document("empty.docx")
+
+# # 获取文档中的第一个段落
+# paragraph = doc.paragraphs[0]
+
+# # 创建一个run对象并设置其字体为"Arial"
+# run = paragraph.add_run()
+# run.text = "Hello, world!"
+# run.font.name = "Arial"
+
+# # 保存文档
+# doc.save("modified.docx")
+
+
+
+
+
+
+
+
+# 扫描的文件，好多种突出的颜色，想要把他们都替换成下划线，而且取消掉颜色
+
+
+from docx import Document
+from docx.shared import RGBColor
+
+def process_table_text_in_word(input_file, output_file):
+    
+    # 打开 Word 文档
+    doc = Document(input_file)
+
+    # 定义黑色的 RGB 值
+    black_color = RGBColor(0, 0, 0)
+
+    # 遍历文档中的表格
+    for table in doc.tables:
+        # 遍历表格的每一行
+        for row in table.rows:
+            # 遍历行中的每个单元格
+            for cell in row.cells:
+                # 遍历单元格中的每个段落
+                for paragraph in cell.paragraphs:
+                    # 遍历段落中的每个运行对象
+                    for run in paragraph.runs:
+                        # 检查字体颜色是否不是黑色
+                        if run.font.color.rgb and run.font.color.rgb != black_color:
+                            # 将字体颜色设置为黑色
+                            run.font.color.rgb = black_color
+                            # 将字体设置为斜体
+                            # run.font.italic = True
+                            # 黑体
+                            # run.font.bold = True
+                            # 下划线
+                            run.font.underline = True
+
+    # 保存修改后的文档
+    doc.save(output_file)
+
+# 示例用法
+input_file = '方剂学.docx'
+output_file = '方剂学_output.docx'
+process_table_text_in_word(input_file, output_file)
+
+
